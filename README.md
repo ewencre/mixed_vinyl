@@ -1,2 +1,2 @@
 # mixed_vinyl
-![.](https://symfonycasts.com/screencast/symfony/)
+https://symfonycasts.com/screencast/symfony/
