@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use function Symfony\Component\String\u;
+use Knp\Bundle\TimeBundle\DateTimeFormatter;
 
 class VinylController extends AbstractController
 {
@@ -49,10 +50,15 @@ class VinylController extends AbstractController
     }
 
     #[Route('/browse/{slug}', name: 'app_browse')]
-    public function browse(string $slug=null): Response
+    public function browse(DateTimeFormatter $timeFormatter, string $slug=null): Response
     {
         $genre = $slug ? u(str_replace('-', ' ', $slug))->title(true) : null;
         $mixes = $this->getMixes();
+
+        foreach ($mixes as $key => $mix)
+        {
+            
+        }
 
         return $this->render(
             'vinyl/browse.html.twig',
