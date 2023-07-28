@@ -38,7 +38,7 @@ class MixController extends AbstractController
         );
     }
 
-    #[Route('/mix/{id}', name: 'app_mix_show')]
+    #[Route('/mix/{slug}', name: 'app_mix_show')]
     public function show(VinylMix $mix): Response
     {
         return $this->render(
@@ -54,15 +54,17 @@ class MixController extends AbstractController
 
         if ($direction === 'up')
         {
-            $mix->setVotes($mix->getVotes() + 1);
+            $mix->upVote();
         }
         else
         {
-            $mix->setVotes($mix->getVotes() - 1);
+            $mix->downVote();
         }
+
+        $this->addFlash('success', 'Vote comptabilisé !');
 
         $entityManager->flush();
 
-        return $this->redirectToRoute('app_mix_show', ['id' => $mix->getId()]);
+        return $this->redirectToRoute('app_mix_show', ['slug' => $mix->getSlug()]);
     }
 }

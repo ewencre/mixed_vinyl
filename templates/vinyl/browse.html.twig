@@ -25,26 +25,37 @@
 
     <div>
         <h2 class="mt-5">Mixes</h2>
-        <div class="row">
-            {% for mix in mixes %}
-            <a 
-                href="{{ path('app_mix_show', {id: mix.id}) }}"
-                class="col col-md-4"
-            >
-                <div class="mixed-vinyl-container p-3 text-center">
-                    <img src="{{ mix.imageUrl(300) }}" data-src="{{ mix.imageUrl(300) }}" alt="Mix album cover">
-                    <p class="mt-2"><strong>{{ mix.title }}</strong></p>
-                    <span>{{ mix.trackCount }} Tracks</span>
-                    |
-                    <span>{{ mix.genre }}</span>
-                    |
-                    <span title="{{ mix.createdAt | date('Y-m-d') }}">{{ mix.createdAt | ago }}</span>
-                    <br>
-                    {{ mix.votesString }} votes
-                </div>
-            </a>
-            {% endfor %}
-        </div>
+        <turbo-frame id="mix-browse-list-{{ pager.currentPage }}" target="_top">
+            <div class="row">
+                {% for mix in pager %}
+                <a 
+                    href="{{ path('app_mix_show', {slug: mix.slug}) }}"
+                    class="col col-md-4"
+                    style="color: inherit;text-decoration: none;"
+                >
+                    <div class="mixed-vinyl-container p-3 text-center">
+                        <img src="{{ mix.imageUrl(300) }}" data-src="{{ mix.imageUrl(300) }}" alt="Mix album cover">
+                        <p class="mt-2"><strong>{{ mix.title }}</strong></p>
+                        <span>{{ mix.trackCount }} Tracks</span>
+                        |
+                        <span>{{ mix.genre }}</span>
+                        |
+                        <span title="{{ mix.createdAt | date('Y-m-d') }}">{{ mix.createdAt | ago }}</span>
+                        <br>
+                        {{ mix.votesString }} votes
+                    </div>
+                </a>
+                {% endfor %}
+
+                {% if pager.hasNextPage %}
+                    <turbo-frame 
+                        id="mix-browse-list-{{ pager.nextPage }}" 
+                        src="{{ pagerfanta_page_url(pager, pager.nextPage) }}"
+                        loading="lazy"
+                    ></turbo-frame>
+                {% endif %}
+            </div>
+        </turbo-frame>
     </div>
 </div>
 {% endblock %}
